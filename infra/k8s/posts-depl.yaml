@@ -1,0 +1,31 @@
+apiVersion: apps/v1 #deployment is inside this bucket of different objects
+kind: Deployment #kind of object that we want to create
+metadata:
+  name: posts-depl
+spec:
+  replicas: 1 #Replicas is the number of pods that we want to create running some particular image.
+  selector:
+    matchLabels: #This selector is saying, look at all the different pods that have been created. Find pods with this label
+      app: posts
+  template:
+    metadata:
+      labels:
+        app: posts #find all pods with label app:posts
+    spec:
+      containers:
+        - name: posts
+          image: 268prajjwal/posts
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: posts-clusterip-srv
+spec:
+  selector:
+    app: posts
+  type: ClusterIP
+  ports:
+    - name: posts
+      protocol: TCP
+      port: 4000
+      targetPort: 4000

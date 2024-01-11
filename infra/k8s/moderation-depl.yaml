@@ -1,0 +1,31 @@
+apiVersion: apps/v1 #deployment is inside this bucket of different objects
+kind: Deployment #kind of object that we want to create
+metadata:
+  name: moderation-depl
+spec:
+  replicas: 1 #Replicas is the number of pods that we want to create running some particular image.
+  selector:
+    matchLabels: #This selector is saying, look at all the different pods that have been created. Find pods with this label
+      app: moderation
+  template:
+    metadata:
+      labels:
+        app: moderation
+    spec:
+      containers:
+        - name: moderation
+          image: 268prajjwal/moderation
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: moderation-srv
+spec:
+  selector:
+    app: moderation
+  type: ClusterIP
+  ports:
+    - name: moderation
+      protocol: TCP
+      port: 4003
+      targetPort: 4003

@@ -1,0 +1,57 @@
+apiVersion: skaffold/v4beta3
+kind: Config
+manifests:
+  rawYaml:
+    - ./infra/k8s/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: 268prajjwal/client
+      context: client
+      sync:
+        manual:
+          - src: src/**/*.js
+            dest: .
+      docker:
+        dockerfile: Dockerfile
+    - image: 268prajjwal/comments
+      context: comments
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+      docker:
+        dockerfile: Dockerfile
+    - image: 268prajjwal/event-bus
+      context: event-bus
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+      docker:
+        dockerfile: Dockerfile
+    - image: 268prajjwal/moderation
+      context: moderation
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+      docker:
+        dockerfile: Dockerfile
+    - image: 268prajjwal/posts
+      context: posts
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+      docker:
+        dockerfile: Dockerfile
+    - image: 268prajjwal/query
+      context: query
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+      docker:
+        dockerfile: Dockerfile

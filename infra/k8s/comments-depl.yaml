@@ -1,0 +1,31 @@
+apiVersion: apps/v1 #deployment is inside this bucket of different objects
+kind: Deployment #kind of object that we want to create
+metadata:
+  name: comments-depl
+spec:
+  replicas: 1 #Replicas is the number of pods that we want to create running some particular image.
+  selector:
+    matchLabels: #This selector is saying, look at all the different pods that have been created. Find pods with this label
+      app: comments
+  template:
+    metadata:
+      labels:
+        app: comments
+    spec:
+      containers:
+        - name: comments
+          image: 268prajjwal/comments
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: comments-srv
+spec:
+  selector:
+    app: comments
+  type: ClusterIP
+  ports:
+    - name: comments
+      protocol: TCP
+      port: 4001
+      targetPort: 4001
